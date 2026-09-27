@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F5F5F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<title>Common Ground — the flat all three of you can live with</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔑</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F5F7; --card:#FFFFFF; --ink:#1D1D1F; --ink2:#424245; --muted:#6E6E73; --hair:rgba(0,0,0,.08); --fill:#F2F2F5; --fill2:#E8E8ED;
+  --blue:#0066CC; --blue-fill:#E8F1FB;
+  --p0:#C25E00; --p0f:#FFF1E3; --p1:#0A7D70; --p1f:#E2F5F2; --p2:#7B3FA6; --p2f:#F3EAF9;
+  --red:#D70015; --redf:#FDECEE; --green:#1B8A3A; --amber:#B35C00;
+  --bar:rgba(245,245,247,.78);
+  --r-lg:22px; --r-md:14px; --r-sm:10px;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",system-ui,sans-serif;
+  --disp:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",system-ui,sans-serif;
+  --ease:cubic-bezier(.32,.72,0,1);
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#000; --card:#1C1C1E; --ink:#F5F5F7; --ink2:#D1D1D6; --muted:#98989D; --hair:rgba(255,255,255,.1); --fill:#2C2C2E; --fill2:#3A3A3C;
+  --blue:#2997FF; --blue-fill:#0B2440;
+  --p0:#FF9F43; --p0f:#3A2410; --p1:#3DD6C2; --p1f:#0E302C; --p2:#C89BEF; --p2f:#2E1D3D;
+  --red:#FF6961; --redf:#3A1517; --green:#4CD964; --amber:#FFB340; --bar:rgba(22,22,24,.72); }}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(64px + env(safe-area-inset-top,0px));-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.47 var(--sans);letter-spacing:-.022em;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--disp);margin:0;letter-spacing:-.03em;line-height:1.08}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px}
+.muted{color:var(--muted)}
+
+/* ---------- Top bar ---------- */
+.bar{position:sticky;top:0;z-index:20;background:var(--bar);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hair);padding-top:env(safe-area-inset-top,0px);margin-top:calc(-1 * env(safe-area-inset-top,0px))}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:12px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:600;font-size:17px;background:none;border:0;padding:0}
+.dots{display:flex}.dots i{width:14px;height:14px;border-radius:50%;margin-left:-4px;border:2px solid var(--bg)}.dots i:first-child{margin-left:0}
+.steps{display:flex;background:var(--fill2);border-radius:999px;padding:3px;gap:2px}
+.steps button{border:0;background:transparent;border-radius:999px;padding:6px 14px;font-size:14px;font-weight:500;color:var(--ink2);transition:background .25s var(--ease),color .25s}
+.steps button[aria-current="step"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.steps .n{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--fill);font-size:11px;margin-right:6px;font-weight:600}
+.steps button[aria-current="step"] .n{background:var(--ink);color:var(--card)}
+.textlink{background:none;border:0;color:var(--blue);font-size:14px;padding:6px 0}
+@media (max-width:680px){.steps .lbl{display:none}.steps .n{margin:0}.steps button{padding:6px 10px}.logo>span:last-child{display:none}}
+
+/* ---------- Views ---------- */
+main{padding-bottom:40px}
+.view{display:none}
+.view.on{display:block;animation:in .5s var(--ease)}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.head{padding:56px 0 28px}
+.head h1{font-size:clamp(34px,5.6vw,48px);font-weight:700}
+.head p{font-size:clamp(19px,2.4vw,21px);color:var(--muted);margin-top:12px;max-width:40ch;line-height:1.38}
+
+/* Home */
+.hero{padding:clamp(64px,12vw,120px) 0 40px;text-align:center}
+.hero h1{font-size:clamp(44px,8.4vw,80px);font-weight:700;letter-spacing:-.045em;line-height:1.02;max-width:13ch;margin:0 auto}
+.hero p{font-size:clamp(19px,2.6vw,24px);color:var(--muted);max-width:30ch;margin:22px auto 0;line-height:1.33}
+.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.trio{display:flex;justify-content:center;margin:0 auto 34px}
+.trio span{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font:600 24px var(--disp);color:#fff;margin-left:-14px;border:4px solid var(--bg)}
+.trio span:first-child{margin-left:0}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:64px}
+.how div{background:var(--card);border-radius:var(--r-lg);padding:28px}
+.how b{display:block;font:600 13px var(--sans);color:var(--muted);margin-bottom:12px}
+.how h3{font-size:22px;font-weight:600;margin-bottom:8px;letter-spacing:-.02em}
+.how p{color:var(--muted);font-size:16px}
+@media (max-width:760px){.how{grid-template-columns:1fr}}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:13px 24px;font-size:17px;font-weight:500;background:var(--blue);color:#fff;transition:transform .15s var(--ease),opacity .2s,background .2s;min-height:48px;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn.alt{background:var(--fill2);color:var(--ink)}
+.btn.ink{background:var(--ink);color:var(--card)}
+.btn.sm{padding:8px 16px;font-size:15px;min-height:36px}
+.btn[disabled]{opacity:.35;pointer-events:none}
+.btn.wide{width:100%}
+
+/* Grouped lists (iOS settings style) */
+.group{margin-top:34px}
+.group>h2{font-size:22px;font-weight:600;letter-spacing:-.02em;margin:0 0 4px 4px}
+.group>.note{color:var(--muted);font-size:15px;margin:0 0 12px 4px;max-width:60ch}
+.list{background:var(--card);border-radius:var(--r-lg);overflow:hidden}
+.item{padding:16px 20px;display:flex;align-items:center;gap:16px;min-height:56px;position:relative}
+.item+.item::before{content:"";position:absolute;top:0;left:20px;right:0;height:1px;background:var(--hair)}
+.item label,.item .k{flex:1;font-size:17px}
+.item input[type=text],.item select{border:0;background:transparent;text-align:right;color:var(--muted);font-size:17px;padding:4px 0;min-width:0;width:55%}
+.item select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:18px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238E8E93' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") right center no-repeat;direction:rtl}
+.item input:focus,.item select:focus{outline:0;color:var(--ink)}
+.item.col{flex-direction:column;align-items:stretch;gap:12px}
+.rowtop{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.val{font:600 22px var(--disp);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sub{font-size:14px;color:var(--muted)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;--pct:50%}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(to right,var(--blue) var(--pct),var(--fill2) var(--pct))}
+input[type=range]::-moz-range-track{height:4px;border-radius:4px;background:var(--fill2)}
+input[type=range]::-moz-range-progress{height:4px;border-radius:4px;background:var(--blue)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;margin-top:-12px;box-shadow:0 0.5px 4px rgba(0,0,0,.12),0 6px 13px rgba(0,0,0,.12)}
+input[type=range]::-moz-range-thumb{width:28px;height:28px;border:0;border-radius:50%;background:#fff;box-shadow:0 0.5px 4px rgba(0,0,0,.12),0 6px 13px rgba(0,0,0,.12)}
+input[type=range].soft{--c:var(--p1)}
+input[type=range].soft::-webkit-slider-runnable-track{background:linear-gradient(to right,var(--muted) var(--pct),var(--fill2) var(--pct))}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:18px 20px}
+.chip{border:0;background:var(--fill);border-radius:999px;padding:8px 14px;font-size:15px;transition:background .2s,color .2s}
+.chip[aria-pressed="true"]{background:var(--redf);color:var(--red)}
+.chip[aria-pressed="true"]::before{content:"✕ ";font-size:12px}
+
+.seg{position:relative;display:grid;grid-template-columns:repeat(3,1fr);background:var(--fill2);border-radius:9px;padding:2px;min-width:282px;flex:none}
+.seg button{position:relative;z-index:1;border:0;background:transparent;padding:6px 8px;font-size:13px;font-weight:500;border-radius:7px;color:var(--ink2);white-space:nowrap}
+.seg .thumb{position:absolute;top:2px;bottom:2px;left:2px;width:calc((100% - 4px)/3);background:var(--card);border-radius:7px;box-shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04);transition:transform .3s var(--ease),background .3s}
+.seg[data-v="must"] .thumb{transform:translateX(0);background:var(--ink)}
+.seg[data-v="must"] [data-v="must"]{color:var(--card)}
+.seg[data-v="nice"] .thumb{transform:translateX(100%)}
+.seg[data-v="nice"] [data-v="nice"]{color:var(--blue)}
+.seg[data-v="any"] .thumb{transform:translateX(200%)}
+@media (max-width:560px){.item.feat{flex-direction:column;align-items:stretch;gap:10px}.seg{min-width:0}}
+
+/* Sticky action bar */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:15;background:var(--bar);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--hair);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));transform:translateY(110%);transition:transform .4s var(--ease)}
+.dock:not(.on){visibility:hidden;transition:transform .4s var(--ease),visibility 0s .4s}
+.dock.on{transform:none}
+.dock .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.dock .msg{font-size:15px;color:var(--muted);min-width:0}
+.meter{white-space:nowrap}
+@media (max-width:480px){.dock .msg{font-size:13px}}
+.dock .msg.err{color:var(--red)}
+
+/* Sheet */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:40;opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;bottom:0;z-index:41;width:min(560px,100%);transform:translate(-50%,105%);background:var(--card);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:10px 24px calc(28px + env(safe-area-inset-bottom,0px));transition:transform .45s var(--ease);max-height:92vh;overflow:auto}
+.sheet:not(.on){visibility:hidden;pointer-events:none;transition:transform .45s var(--ease),opacity .25s,visibility 0s .45s}
+.sheet.on{transform:translate(-50%,0)}
+@media (min-width:700px){.sheet{bottom:50%;border-radius:var(--r-lg);transform:translate(-50%,60%) scale(.96);opacity:0;transition:transform .45s var(--ease),opacity .25s}.sheet.on{transform:translate(-50%,50%);opacity:1}}
+.grab{width:36px;height:5px;border-radius:3px;background:var(--fill2);margin:0 auto 18px}
+.sheet h2{font-size:28px;font-weight:700;margin-bottom:8px}
+.sheet .big{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;font-size:34px;margin:8px 0 18px}
+.codebox{margin:20px 0;background:var(--fill);border-radius:var(--r-md);padding:14px 16px;font:13px ui-monospace,Menlo,monospace;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.sheet .stackb{display:grid;gap:10px}
+.sheet .list{background:var(--fill)}
+.sheet .item+.item::before{background:var(--hair)}
+
+/* Together */
+.people3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:820px){.people3{grid-template-columns:1fr}}
+.pc{background:var(--card);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;min-height:280px;transition:box-shadow .3s}
+.av{align-self:flex-start;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font:600 22px var(--disp);color:#fff;background:var(--c);flex:none}
+.av.wait{background:var(--fill);color:var(--muted);border:2px dashed var(--fill2)}
+.pc h3{font-size:22px;font-weight:600;margin:16px 0 4px;letter-spacing:-.02em}
+.pc ul{list-style:none;padding:0;margin:10px 0 0;font-size:15px;color:var(--ink2)}
+.pc li{padding:6px 0;border-top:1px solid var(--hair)}
+.pc li:first-child{border-top:0}
+.pc li span{color:var(--muted);display:block;font-size:13px}
+.pc textarea{width:100%;border:0;background:var(--fill);border-radius:var(--r-sm);padding:12px;font:13px ui-monospace,Menlo,monospace;letter-spacing:0;min-height:84px;resize:none;margin-top:14px}
+.pc .foot{margin-top:auto;padding-top:16px;display:flex;gap:10px}
+.meter{display:flex;gap:6px;align-items:center}
+.meter i{width:28px;height:6px;border-radius:3px;background:var(--fill2);transition:background .3s}
+.meter i.on{background:var(--green)}
+
+/* Results */
+.verdict{padding:56px 0 8px}
+.verdict .kick{font-weight:600;color:var(--muted);font-size:17px;margin-bottom:10px}
+.verdict h1{font-size:clamp(34px,5.8vw,56px);font-weight:700;max-width:16ch;letter-spacing:-.04em}
+.verdict p{font-size:19px;color:var(--muted);margin-top:14px;max-width:48ch}
+.glance{margin-top:36px;background:var(--card);border-radius:var(--r-lg);overflow:hidden}
+.glance table{width:100%;border-collapse:collapse}
+.glance th,.glance td{padding:14px 18px;text-align:left;font-size:15px}
+.glance thead th{font-size:13px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--hair)}
+.glance tbody tr+tr td{border-top:1px solid var(--hair)}
+.glance td:first-child{font-weight:600}
+.glance a{color:inherit;text-decoration:none}
+.glance a:hover{color:var(--blue)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:rgba(27,138,58,.12);color:var(--green)}
+.pill.mid{background:rgba(179,92,0,.12);color:var(--amber)}
+.pill.no{background:var(--redf);color:var(--red)}
+.tight{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.tight div{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:999px;padding:6px 16px 6px 6px;font-size:15px}
+.tight .av{width:30px;height:30px;font-size:13px}
+
+.opt{background:var(--card);border-radius:28px;margin-top:28px;overflow:hidden}
+.opt.miss{box-shadow:inset 0 0 0 2px var(--red)}
+.opt-top{padding:30px 32px 24px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-end}
+.opt-top .label{font-size:15px;font-weight:600;color:var(--blue);margin-bottom:6px}
+.miss .opt-top .label{color:var(--red)}
+.opt-top h2{font-size:clamp(26px,3.6vw,34px);font-weight:700}
+.opt-top .where{color:var(--muted);margin-top:6px;font-size:16px}
+.price{text-align:right}
+.price b{font:700 clamp(26px,3.6vw,34px) var(--disp);letter-spacing:-.03em;display:block}
+.price span{color:var(--muted);font-size:15px}
+.facts{display:flex;gap:8px;flex-wrap:wrap;padding:0 32px 24px}
+.facts span{background:var(--fill);border-radius:999px;padding:5px 12px;font-size:14px;color:var(--ink2)}
+.facts span.off{text-decoration:line-through;color:var(--muted)}
+.trade{margin:0 32px;padding:18px 20px;border-radius:var(--r-md);background:var(--fill);font-size:16px;line-height:1.5}
+.trade b{font-weight:600}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:12px 16px 20px}
+.who{padding:18px 16px}
+.who-h{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.who-h .av{width:40px;height:40px;font-size:16px}
+.who-h h4{font-size:19px;font-weight:600;letter-spacing:-.02em}
+.who ul{list-style:none;margin:0;padding:0;font-size:15px}
+.who li{display:flex;gap:10px;padding:5px 0;line-height:1.4}
+.who li svg{flex:none;margin-top:3px}
+.who li.x{color:var(--red);font-weight:500}
+.who details{margin-top:6px}
+.who summary{list-style:none;color:var(--blue);font-size:15px;cursor:pointer;padding:5px 0}
+.who summary::-webkit-details-marker{display:none}
+.who details[open] summary{color:var(--muted)}
+@media (max-width:820px){.cols{grid-template-columns:1fr;padding:8px 16px 16px}.who+.who{border-top:1px solid var(--hair)}.opt-top,.facts{padding-left:22px;padding-right:22px}.trade{margin:0 22px}.price{text-align:left}}
+
+.after{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:48px}
+.empty{text-align:center;padding:80px 20px}
+.empty h2{font-size:28px;font-weight:700;margin-bottom:10px}
+.empty p{color:var(--muted);margin-bottom:24px}
+
+/* Listings */
+.tbl{overflow-x:auto;background:var(--card);border-radius:var(--r-lg)}
+.tbl table{width:100%;border-collapse:collapse;font-size:15px}
+.tbl th,.tbl td{padding:12px 14px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--hair)}
+.tbl th{font-size:13px;color:var(--muted);font-weight:600;position:sticky;top:0;background:var(--card)}
+.tbl td.y{color:var(--green)}.tbl td.n{color:var(--fill2)}
+.toggles .item input[type=checkbox]{appearance:none;-webkit-appearance:none;width:51px;height:31px;border-radius:999px;background:var(--fill2);position:relative;transition:background .25s;flex:none;cursor:pointer}
+.toggles .item input[type=checkbox]::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.15);transition:transform .25s var(--ease)}
+.toggles .item input[type=checkbox]:checked{background:var(--green)}
+.toggles .item input[type=checkbox]:checked::after{transform:translateX(20px)}
+.item input[type=number]{border:0;background:transparent;text-align:right;width:120px;color:var(--muted);font-size:17px}
+
+.toast{position:fixed;left:50%;top:calc(70px + env(safe-area-inset-top,0px));transform:translate(-50%,-20px);background:var(--ink);color:var(--card);padding:10px 18px;border-radius:999px;font-size:15px;font-weight:500;opacity:0;transition:opacity .25s,transform .35s var(--ease);pointer-events:none;z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:40px 22px 120px}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <button class="logo" data-go="home" aria-label="Common Ground home"><span class="dots" aria-hidden="true"><i style="background:var(--p0)"></i><i style="background:var(--p1)"></i><i style="background:var(--p2)"></i></span><span>Common Ground</span></button>
+  <nav class="steps" aria-label="Steps">
+    <button data-go="form"><span class="n">1</span><span class="lbl">Your answers</span></button>
+    <button data-go="together"><span class="n">2</span><span class="lbl">All three</span></button>
+    <button data-go="results"><span class="n">3</span><span class="lbl">Shortlist</span></button>
+  </nav>
+  <button class="textlink" data-go="listings">Listings</button>
+</div></header>
+
+<main class="wrap">
+  <!-- HOME -->
+  <section class="view on" id="v-home">
+    <div class="hero">
+      <div class="trio" aria-hidden="true"><span style="background:var(--p0)">R</span><span style="background:var(--p1)">M</span><span style="background:var(--p2)">K</span></div>
+      <h1>The flat all three of you can live with.</h1>
+      <p>Everyone says what they need before anyone falls for a listing. Then you see exactly who gets what, and who gives up what.</p>
+      <div class="cta">
+        <button class="btn" data-go="form">Fill in my answers</button>
+        <button class="btn alt" id="heroExample">See it with an example</button>
+      </div>
+    </div>
+    <div class="how">
+      <div><b>Step 1</b><h3>Answer on your own</h3><p>Budget, commute, areas you won't consider, and what the flat must have. Takes two minutes.</p></div>
+      <div><b>Step 2</b><h3>Send your link</h3><p>Share it with the other two. Tapping it adds your answers. No accounts, nothing to paste.</p></div>
+      <div><b>Step 3</b><h3>Talk about tradeoffs</h3><p>Up to three flats that break nobody's dealbreaker, with each person's compromises spelled out.</p></div>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <section class="view" id="v-form">
+    <div class="head"><h1>Your answers</h1><p>Fill this in on your own. The others won't see a listing until all three of you are done.</p></div>
+    <form id="pform" onsubmit="return false">
+      <div class="group"><div class="list">
+        <div class="item"><label for="name">Name</label><input type="text" id="name" placeholder="Your first name" autocomplete="given-name"></div>
+      </div></div>
+
+      <div class="group"><h2>Rent</h2><p class="note">Rent is split three ways.</p><div class="list">
+        <div class="item col">
+          <div class="rowtop"><label for="max">The most I can pay</label><span class="val" id="maxV"></span></div>
+          <input type="range" id="max" min="6000" max="40000" step="500" value="16000">
+          <p class="sub">A flat that needs more from you is ruled out.</p>
+        </div>
+        <div class="item col">
+          <div class="rowtop"><label for="comfy">What I'd be comfortable with</label><span class="val" id="comfyV"></span></div>
+          <input type="range" id="comfy" class="soft" min="6000" max="40000" step="500" value="14000">
+          <p class="sub">Paying more than this counts as a compromise, not a dealbreaker.</p>
+        </div>
+      </div></div>
+
+      <div class="group"><h2>Commute</h2><p class="note">The one place you need to get to most.</p><div class="list">
+        <div class="item"><label for="anchorLabel">What it is</label><input type="text" id="anchorLabel" placeholder="Office, family, gym"></div>
+        <div class="item"><label for="anchor">Where it is</label><select id="anchor"></select></div>
+        <div class="item col">
+          <div class="rowtop"><label for="maxMins">Longest I'll travel</label><span class="val" id="minsV"></span></div>
+          <input type="range" id="maxMins" min="10" max="90" step="5" value="40">
+          <p class="sub">Estimated peak-hour time, area to area.</p>
+        </div>
+      </div></div>
+
+      <div class="group"><h2>Areas I won't live in</h2><p class="note">Tap any area that's a no for you.</p><div class="list"><div class="chips" id="avoid"></div></div></div>
+
+      <div class="group"><h2>The flat itself</h2><p class="note"><b>Must have</b> rules out any flat without it. <b>Would like</b> counts in a flat's favour.</p><div class="list" id="feat"></div></div>
+    </form>
+  </section>
+
+  <!-- TOGETHER -->
+  <section class="view" id="v-together">
+    <div class="head"><h1>All three of you</h1><p>Open the links the others sent you, or paste their codes. The shortlist unlocks when everyone's in.</p></div>
+    <div class="people3" id="slots"></div>
+    <div style="display:flex;gap:18px;align-items:center;justify-content:center;margin-top:28px;flex-wrap:wrap">
+      <button class="textlink" id="loadExample">Use Riya, Meera and Kavita as an example</button>
+      <button class="textlink" id="clearSlots" style="color:var(--muted)">Start over</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="view" id="v-results"><div id="results"></div></section>
+
+  <!-- LISTINGS -->
+  <section class="view" id="v-listings">
+    <div class="head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
+      <div><h1>Listings</h1><p>Every flat gets checked against all three of you. Add any you've found.</p></div>
+      <button class="btn" id="openAdd">Add a listing</button>
+    </div>
+    <div class="tbl"><table id="ltable"></table></div>
+  </section>
+</main>
+
+<div class="dock" id="dock"><div class="wrap"><span class="msg" id="dockMsg"></span><button class="btn" id="dockBtn"></button></div></div>
+<div class="scrim" id="scrim"></div>
+
+<div class="sheet" id="codeSheet" role="dialog" aria-modal="true" aria-labelledby="csT">
+  <div class="grab"></div>
+  <div class="big" aria-hidden="true">✓</div>
+  <h2 id="csT">You're done, <span id="csName"></span>.</h2>
+  <p class="muted">Send your link to the other two. When they open it, your answers are added for them.</p>
+  <div class="codebox" id="codeText"></div>
+  <div class="stackb">
+    <button class="btn wide" id="shareLink">Share my link</button>
+    <button class="btn alt wide" id="copyLink">Copy link</button>
+    <button class="btn alt wide" id="addHere">I'm putting all three together</button>
+  </div>
+</div>
+
+<div class="sheet" id="addSheet" role="dialog" aria-modal="true" aria-labelledby="asT">
+  <div class="grab"></div>
+  <h2 id="asT">Add a listing</h2>
+  <form id="lform" onsubmit="return false">
+    <div class="group" style="margin-top:18px"><div class="list">
+      <div class="item"><label for="lt">Name</label><input type="text" id="lt" placeholder="Sai Heights, 402"></div>
+      <div class="item"><label for="la">Area</label><select id="la"></select></div>
+      <div class="item"><label for="lr">Total rent (₹)</label><input type="number" id="lr" min="0" step="500" placeholder="42000"></div>
+      <div class="item"><label for="lf">Floor</label><input type="number" id="lf" min="0" value="1"></div>
+      <div class="item"><label for="lb">Bathrooms</label><input type="number" id="lb" min="1" value="2"></div>
+    </div></div>
+    <div class="group toggles" style="margin-top:18px"><div class="list" id="lchecks"></div></div>
+    <p class="sub" id="lerr" role="alert" style="color:var(--red);margin:12px 4px 0"></p>
+    <div class="stackb" style="margin-top:18px"><button class="btn wide" id="addListing">Add listing</button><button class="btn alt wide" data-close>Cancel</button></div>
+  </form>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+<footer>Common Ground shows you the options and the tradeoffs. The decision stays with the three of you.</footer>
+
+<script>
+// ---------- Data ----------
+const AREAS = {
+  "Aundh": [18.558, 73.807], "Balewadi": [18.576, 73.779], "Baner": [18.559, 73.787],
+  "Bavdhan": [18.515, 73.775], "Deccan": [18.516, 73.841], "Hadapsar": [18.508, 73.926],
+  "Hinjewadi": [18.591, 73.738], "Kalyani Nagar": [18.548, 73.902], "Kharadi": [18.551, 73.935],
+  "Koregaon Park": [18.536, 73.894], "Kothrud": [18.507, 73.807], "Magarpatta": [18.515, 73.929],
+  "Pashan": [18.537, 73.797], "Pimple Saudagar": [18.599, 73.797], "Shivajinagar": [18.530, 73.847],
+  "Viman Nagar": [18.567, 73.914], "Wakad": [18.599, 73.762]
+};
+
+// Rough peak-hour estimate: 3.5 min per km + 8 min to get going.
+function commuteMins(a, b) {
+  if (a === b) return 10;
+  const [la1, lo1] = AREAS[a], [la2, lo2] = AREAS[b];
+  const r = Math.PI / 180, dLa = (la2 - la1) * r, dLo = (lo2 - lo1) * r;
+  const h = Math.sin(dLa / 2) ** 2 + Math.cos(la1 * r) * Math.cos(la2 * r) * Math.sin(dLo / 2) ** 2;
+  const km = 12742 * Math.asin(Math.sqrt(h));
+  return Math.round(km * 3.5 + 8);
+}
+
+const FEATURES = [
+  { id: "lift", label: "Lift", missing: "No lift", test: l => l.lift },
+  { id: "parking", label: "Car parking", missing: "No car parking", test: l => l.parking },
+  { id: "pets", label: "Pet-friendly", missing: "No pets allowed", test: l => l.pets },
+  { id: "bath3", label: "Own bathroom each", missing: "Has to share a bathroom", test: l => l.baths >= 3 },
+  { id: "furnished", label: "Furnished", missing: "Unfurnished", test: l => l.furnished },
+  { id: "balcony", label: "Balcony", missing: "No balcony", test: l => l.balcony },
+  { id: "lowfloor", label: "Floor 2 or lower", missing: "Higher than floor 2", test: l => l.floor <= 2 },
+  { id: "security", label: "Gated, 24h security", missing: "No 24h security", test: l => l.security },
+  { id: "backup", label: "Power backup", missing: "No power backup", test: l => l.backup },
+  { id: "gym", label: "Gym in the society", missing: "No gym in the society", test: l => l.gym },
+  { id: "metro", label: "Near a metro station", missing: "Not near a metro", test: l => l.metro }
+];
+
+const L = (id, title, area, rent, floor, baths, f) => ({
+  id, title, area, rent, floor, baths, sample: true,
+  lift: f.includes("L"), parking: f.includes("P"), pets: f.includes("T"), furnished: f.includes("F"),
+  balcony: f.includes("B"), security: f.includes("S"), backup: f.includes("U"), gym: f.includes("G"), metro: f.includes("M")
+});
+// Feature codes: L lift, P parking, T pets, F furnished, B balcony, S security, U backup, G gym, M metro
+const SAMPLE_LISTINGS = [
+  L("s1", "Sunshine Heights 3BHK", "Baner", 48000, 6, 3, "LPFBSUG"),
+  L("s2", "Greenfield Residency", "Baner", 42000, 3, 2, "LPTBSU"),
+  L("s3", "Orchid Park 3BHK", "Aundh", 45000, 4, 3, "LPTBSUM"),
+  L("s4", "Parihar Chowk walk-up", "Aundh", 36000, 2, 2, "TB"),
+  L("s5", "Skyline Towers", "Balewadi", 44000, 9, 3, "LPTFBSUG"),
+  L("s6", "Laxmi Villa floor", "Pashan", 39000, 1, 3, "PTBSU"),
+  L("s7", "Pashan Lake View", "Pashan", 43000, 5, 3, "LPTBSUG"),
+  L("s8", "Karishma Society", "Kothrud", 38000, 3, 2, "LPSU"),
+  L("s9", "Mayur Colony 3BHK", "Kothrud", 41000, 5, 3, "LPTSUM"),
+  L("s10", "Hilltop Enclave", "Bavdhan", 37000, 5, 3, "PTBS"),
+  L("s11", "Megapolis Sparklet", "Hinjewadi", 34000, 12, 3, "LPTFSUG"),
+  L("s12", "Blue Ridge 3BHK", "Hinjewadi", 40000, 8, 3, "LPTBSUG"),
+  L("s13", "Kasturi Apartments", "Wakad", 35000, 4, 2, "LPTBSU"),
+  L("s14", "Rose Icon", "Pimple Saudagar", 33000, 5, 3, "LPTBSUG"),
+  L("s15", "Model Colony old bungalow", "Shivajinagar", 52000, 0, 3, "PBF"),
+  L("s16", "Deccan Gymkhana flat", "Deccan", 47000, 5, 2, "LSUM"),
+  L("s17", "Lane 6 Residency", "Koregaon Park", 62000, 3, 3, "LPTFBSUG"),
+  L("s18", "Kalyani Crest", "Kalyani Nagar", 55000, 7, 3, "LPTBSUGM"),
+  L("s19", "Viman Nagar Symphony", "Viman Nagar", 50000, 10, 3, "LPFBSUG"),
+  L("s20", "EON Heights", "Kharadi", 42000, 14, 3, "LPTBSUG"),
+  L("s21", "Amanora Adreno", "Hadapsar", 46000, 18, 3, "LPTFBSUG"),
+  L("s22", "Magarpatta Cosmos", "Magarpatta", 44000, 6, 2, "LPSUG"),
+  L("s23", "Baner Road walk-up", "Baner", 35000, 5, 3, "TB"),
+  L("s24", "Aundh ITI Road 3BHK", "Aundh", 40000, 1, 3, "LPBSU")
+];
+
+const EXAMPLE_PEOPLE = [
+  { name: "Riya", max: 16000, comfy: 14500, anchor: "Shivajinagar", anchorLabel: "family and gym", maxMins: 35,
+    avoid: ["Hinjewadi", "Wakad"], feat: { security: "must", gym: "nice", balcony: "nice", furnished: "nice", bath3: "nice" } },
+  { name: "Meera", max: 15000, comfy: 13500, anchor: "Deccan", anchorLabel: "office", maxMins: 45,
+    avoid: [], feat: { lift: "must", bath3: "nice", metro: "nice", backup: "nice" } },
+  { name: "Kavita", max: 16500, comfy: 14000, anchor: "Hinjewadi", anchorLabel: "office", maxMins: 40,
+    avoid: ["Hadapsar", "Kharadi", "Viman Nagar"], feat: { parking: "must", pets: "must", balcony: "nice", gym: "nice" } }
+];
+
+// ---------- Engine ----------
+const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
+
+// Evaluate one listing for one person: what she gets, what she gives up, what breaks it.
+function evaluate(l, p) {
+  const share = l.rent / 3, gets = [], gives = [], breaks = [], short = [];
+  if (share > p.max) breaks.push(`Her share ${inr(share)} is over her ${inr(p.max)} limit`);
+  else if (share > p.comfy) { gives.push(`Pays ${inr(share - p.comfy)} a month more than her comfortable ${inr(p.comfy)}`); short.push(`${inr(share - p.comfy)}/month more`); }
+  else gets.push(`Share of ${inr(share)} fits her budget`);
+
+  if ((p.avoid || []).includes(l.area)) breaks.push(`${l.area} is on her won't-live-there list`);
+
+  const t = commuteMins(l.area, p.anchor);
+  if (t > p.maxMins) breaks.push(`About ${t} min to her ${p.anchorLabel} (her limit is ${p.maxMins})`);
+  else gets.push(`About ${t} min to her ${p.anchorLabel}`);
+
+  let niceTotal = 0, niceMet = 0;
+  for (const f of FEATURES) {
+    const want = (p.feat || {})[f.id];
+    if (!want || want === "any") continue;
+    const ok = f.test(l);
+    if (want === "must") (ok ? gets : breaks).push(ok ? f.label : f.missing);
+    else { niceTotal++; if (ok) { niceMet++; gets.push(f.label); } else { gives.push(f.missing); short.push(f.label.toLowerCase()); } }
+  }
+  // Satisfaction: share of her nice-to-haves met, minus a nudge for paying over comfortable.
+  const sat = (niceTotal ? niceMet / niceTotal : 1) - (share > p.comfy ? 0.15 : 0);
+  return { person: p, share, commute: t, gets, gives, breaks, short, niceMet, niceTotal, sat };
+}
+
+function rankListings(listings, people) {
+  const rows = listings.map(l => {
+    const evals = people.map(p => evaluate(l, p));
+    const breakers = evals.filter(e => e.breaks.length).length;
+    const totalBreaks = evals.reduce((s, e) => s + e.breaks.length, 0);
+    const niceMet = evals.reduce((s, e) => s + e.niceMet, 0);
+    const minSat = Math.min(...evals.map(e => e.sat));
+    const avgSat = evals.reduce((s, e) => s + e.sat, 0) / evals.length;
+    return { listing: l, evals, breakers, totalBreaks, niceMet, minSat, avgSat, workable: breakers === 0 };
+  });
+  // Fewest dealbreakers first, then fairest (the least-happy person is as happy as possible),
+  // then most nice-to-haves overall, then cheapest.
+  rows.sort((a, b) => a.breakers - b.breakers || a.totalBreaks - b.totalBreaks ||
+    b.minSat - a.minSat || b.avgSat - a.avgSat || a.listing.rent - b.listing.rent);
+  const workable = rows.filter(r => r.workable);
+  const shortlist = workable.slice(0, 3);
+  const nearMisses = shortlist.length < 3 ? rows.filter(r => !r.workable).slice(0, 3 - shortlist.length) : [];
+  // How many listings each person's dealbreakers rule out on their own.
+  const ruledOut = people.map((p, i) => ({ person: p, count: rows.filter(r => r.evals[i].breaks.length).length }));
+  return { rows, workable, shortlist, nearMisses, ruledOut, total: rows.length };
+}
+
+if (typeof module !== "undefined") module.exports = { AREAS, FEATURES, SAMPLE_LISTINGS, EXAMPLE_PEOPLE, evaluate, rankListings, commuteMins, inr };
+
+
+// ---------- helpers ----------
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const C = i => `var(--p${i})`, CF = i => `var(--p${i}f)`;
+const initial = n => esc((n || "?").trim().charAt(0).toUpperCase());
+const toast = m => { const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("on"), 2000); };
+const ICON = {
+  g: `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--green)" opacity=".15"/><path d="M4.5 8.2l2.3 2.3 4.7-4.9" stroke="var(--green)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  c: `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--amber)" opacity=".15"/><path d="M4.8 8h6.4" stroke="var(--amber)" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  x: `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--red)" opacity=".15"/><path d="M5.3 5.3l5.4 5.4M10.7 5.3l-5.4 5.4" stroke="var(--red)" stroke-width="1.8" stroke-linecap="round"/></svg>`
+};
+
+let slots = store.get("cg-slots", [null, null, null]);
+let custom = store.get("cg-listings", []);
+const allListings = () => SAMPLE_LISTINGS.concat(custom);
+const areaNames = Object.keys(AREAS);
+
+// ---------- codes & links ----------
+const encode = p => "CG1-" + btoa(unescape(encodeURIComponent(JSON.stringify(p))));
+function decode(code) {
+  let s = decodeURIComponent(String(code).trim()).replace(/\s/g, "");
+  const i = s.indexOf("CG1-"); if (i < 0) throw new Error("That doesn't look like a Common Ground code or link.");
+  s = s.slice(i + 4).replace(/[^A-Za-z0-9+/=]/g, "");
+  let p; try { p = JSON.parse(decodeURIComponent(escape(atob(s)))); } catch { throw new Error("That code is incomplete. Ask her to send it again."); }
+  if (!p.name || !p.max || !p.anchor) throw new Error("That code is missing answers.");
+  return p;
+}
+const linkFor = code => `${location.origin}${location.pathname}#add=${encodeURIComponent(code)}`;
+function addProfile(p) {
+  let i = slots.findIndex(s => s && s.name.toLowerCase() === p.name.toLowerCase());
+  if (i < 0) i = slots.findIndex(s => !s);
+  if (i < 0) return false;
+  slots[i] = p; store.set("cg-slots", slots); return true;
+}
+
+// ---------- navigation ----------
+let view = "home";
+function go(v) {
+  view = v;
+  $$(".view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
+  $$(".steps button").forEach(b => b.dataset.go === v ? b.setAttribute("aria-current", "step") : b.removeAttribute("aria-current"));
+  if (v === "together") renderSlots();
+  if (v === "results") renderResults();
+  updateDock(); window.scrollTo({ top: 0 });
+}
+document.addEventListener("click", e => { const g = e.target.closest("[data-go]"); if (g) { e.preventDefault(); go(g.dataset.go); } });
+
+// ---------- dock (primary action per view) ----------
+function updateDock() {
+  const d = $("#dock"), btn = $("#dockBtn"), msg = $("#dockMsg");
+  msg.classList.remove("err");
+  if (view === "form") { d.classList.add("on"); btn.textContent = "Create my link"; btn.disabled = false; msg.textContent = "You can change your answers any time."; btn.onclick = makeCode; }
+  else if (view === "together") {
+    const n = slots.filter(Boolean).length; d.classList.add("on");
+    msg.innerHTML = `<span class="meter" aria-label="${n} of 3 in">${[0, 1, 2].map(i => `<i class="${i < n ? "on" : ""}"></i>`).join("")}<span style="margin-left:8px">${n} of 3 in</span></span>`;
+    btn.textContent = "See our shortlist"; btn.disabled = n < 3; btn.onclick = () => go("results");
+  } else d.classList.remove("on");
+}
+
+// ---------- form ----------
+const fmt = n => "₹" + (+n).toLocaleString("en-IN");
+function paintRange(r) { r.style.setProperty("--pct", ((r.value - r.min) / (r.max - r.min) * 100) + "%"); }
+function syncRanges(src) {
+  const max = $("#max"), comfy = $("#comfy");
+  if (src === max && +comfy.value > +max.value) comfy.value = max.value;
+  if (src === comfy && +comfy.value > +max.value) max.value = comfy.value;
+  $("#maxV").textContent = fmt(max.value); $("#comfyV").textContent = fmt(comfy.value); $("#minsV").textContent = $("#maxMins").value + " min";
+  $$("input[type=range]").forEach(paintRange);
+}
+$$("input[type=range]").forEach(r => r.addEventListener("input", () => syncRanges(r)));
+const opts = sel => areaNames.map(a => `<option${a === sel ? " selected" : ""}>${a}</option>`).join("");
+$("#anchor").innerHTML = opts("Hinjewadi"); $("#la").innerHTML = opts("Baner");
+$("#avoid").innerHTML = areaNames.map(a => `<button type="button" class="chip" aria-pressed="false" data-a="${a}">${a}</button>`).join("");
+$("#avoid").onclick = e => { const c = e.target.closest(".chip"); if (c) c.setAttribute("aria-pressed", c.getAttribute("aria-pressed") !== "true"); };
+$("#feat").innerHTML = FEATURES.map(f => `<div class="item feat"><span class="k" id="fl-${f.id}">${f.label}</span>
+  <div class="seg" role="radiogroup" aria-labelledby="fl-${f.id}" data-f="${f.id}" data-v="any"><span class="thumb"></span>
+  <button type="button" role="radio" data-v="must" aria-checked="false">Must have</button><button type="button" role="radio" data-v="nice" aria-checked="false">Would like</button><button type="button" role="radio" data-v="any" aria-checked="true">Don't mind</button></div></div>`).join("");
+$("#feat").onclick = e => { const b = e.target.closest(".seg button"); if (!b) return; const s = b.parentNode; s.dataset.v = b.dataset.v; s.querySelectorAll("button").forEach(x => x.setAttribute("aria-checked", x === b)); };
+syncRanges();
+
+function readForm() {
+  const name = $("#name").value.trim();
+  if (!name) { $("#name").focus(); throw new Error("Add your name so the others know these are your answers."); }
+  const feat = {}; $$("#feat .seg").forEach(s => { if (s.dataset.v !== "any") feat[s.dataset.f] = s.dataset.v; });
+  return { name, max: +$("#max").value, comfy: +$("#comfy").value, anchor: $("#anchor").value, anchorLabel: $("#anchorLabel").value.trim() || "work",
+    maxMins: +$("#maxMins").value, avoid: $$('#avoid [aria-pressed="true"]').map(c => c.dataset.a), feat };
+}
+let lastProfile = null, lastLink = "";
+function makeCode() {
+  try { lastProfile = readForm(); } catch (err) { const m = $("#dockMsg"); m.textContent = err.message; m.classList.add("err"); return; }
+  const code = encode(lastProfile); lastLink = linkFor(code);
+  $("#csName").textContent = lastProfile.name; $("#codeText").textContent = lastLink;
+  openSheet("#codeSheet");
+}
+$("#shareLink").onclick = async () => {
+  const text = `My flat-hunt answers for Common Ground. Tap to add them: ${lastLink}`;
+  if (navigator.share) { try { await navigator.share({ title: "Common Ground", text: "My flat-hunt answers. Tap to add them.", url: lastLink }); } catch {} }
+  else window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank", "noopener");
+};
+$("#copyLink").onclick = () => navigator.clipboard.writeText(lastLink).then(() => toast("Link copied"), () => toast("Select the link above to copy it"));
+$("#addHere").onclick = () => { if (!lastProfile) return; if (!addProfile(lastProfile)) { toast("All three places are taken"); } closeSheets(); go("together"); };
+
+// ---------- sheets ----------
+function openSheet(sel) { $("#scrim").classList.add("on"); $(sel).classList.add("on"); setTimeout(() => $(sel).querySelector("button,input")?.focus(), 350); }
+function closeSheets() { $("#scrim").classList.remove("on"); $$(".sheet").forEach(s => s.classList.remove("on")); }
+$("#scrim").onclick = closeSheets;
+document.addEventListener("click", e => { if (e.target.closest("[data-close]")) closeSheets(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheets(); });
+
+// ---------- together ----------
+function renderSlots() {
+  $("#slots").innerHTML = slots.map((p, i) => {
+    if (!p) return `<div class="pc"><div class="av wait" aria-hidden="true">${i + 1}</div><h3>Waiting for person ${i + 1}</h3>
+      <p class="sub">Open the link she sent, or paste it here.</p>
+      <label class="sub" for="paste${i}" style="position:absolute;left:-9999px">Paste link or code</label>
+      <textarea id="paste${i}" placeholder="Paste link or code"></textarea>
+      <div class="foot"><button class="btn sm" data-add="${i}">Add</button></div></div>`;
+    const must = Object.entries(p.feat || {}).filter(([, v]) => v === "must").map(([k]) => FEATURES.find(f => f.id === k).label);
+    const nice = Object.entries(p.feat || {}).filter(([, v]) => v === "nice").map(([k]) => FEATURES.find(f => f.id === k).label);
+    return `<div class="pc" style="box-shadow:inset 0 0 0 2px ${C(i)}"><div class="av" style="--c:${C(i)}">${initial(p.name)}</div><h3>${esc(p.name)}</h3>
+      <ul>
+        <li><span>Rent</span>Up to ${fmt(p.max)}, happiest at ${fmt(p.comfy)}</li>
+        <li><span>Commute</span>${p.maxMins} min max to ${esc(p.anchorLabel)} in ${esc(p.anchor)}</li>
+        ${p.avoid.length ? `<li><span>Won't live in</span>${esc(p.avoid.join(", "))}</li>` : ""}
+        ${must.length ? `<li><span>Must have</span>${esc(must.join(", "))}</li>` : ""}
+        ${nice.length ? `<li><span>Would like</span>${esc(nice.join(", "))}</li>` : ""}
+      </ul><div class="foot"><button class="textlink" data-rm="${i}" style="color:var(--red)">Remove</button></div></div>`;
+  }).join("");
+  updateDock();
+}
+$("#slots").onclick = e => {
+  const a = e.target.closest("[data-add]"), r = e.target.closest("[data-rm]");
+  if (a) { const i = +a.dataset.add; try { const p = decode($("#paste" + i).value); slots[i] = p; toast(`${p.name} is in`); } catch (err) { toast(err.message); return; } }
+  if (r) slots[+r.dataset.rm] = null;
+  if (a || r) { store.set("cg-slots", slots); renderSlots(); }
+};
+const loadExample = () => { slots = JSON.parse(JSON.stringify(EXAMPLE_PEOPLE)); store.set("cg-slots", slots); };
+$("#loadExample").onclick = () => { loadExample(); renderSlots(); toast("Example loaded"); };
+$("#heroExample").onclick = () => { loadExample(); go("results"); };
+$("#clearSlots").onclick = () => { slots = [null, null, null]; store.set("cg-slots", slots); renderSlots(); };
+
+// ---------- results ----------
+function pillFor(e) {
+  if (e.breaks.length) return `<span class="pill no">Dealbreaker</span>`;
+  if (!e.gives.length) return `<span class="pill ok">Everything she wanted</span>`;
+  return `<span class="pill mid">${e.gives.length} compromise${e.gives.length > 1 ? "s" : ""}</span>`;
+}
+function tradeLine(r) {
+  return r.evals.map(e => e.breaks.length ? `<b>${esc(e.person.name)}</b> would break a dealbreaker: ${esc(e.breaks[0].charAt(0).toLowerCase() + e.breaks[0].slice(1))}.`
+    : e.short.length ? `<b>${esc(e.person.name)}</b> gives up ${esc(e.short.join(", "))}.` : `<b>${esc(e.person.name)}</b> gives up nothing.`).join(" ");
+}
+function optHTML(r, i, miss) {
+  const l = r.listing;
+  const facts = [["Lift", l.lift], ["Parking", l.parking], ["Pets OK", l.pets], ["Furnished", l.furnished], ["Balcony", l.balcony], ["24h security", l.security], ["Power backup", l.backup], ["Gym", l.gym], ["Near metro", l.metro]];
+  return `<article class="opt${miss ? " miss" : ""}" id="opt-${l.id}">
+    <div class="opt-top"><div><p class="label">${miss ? "Closest miss" : "Option " + (i + 1)}</p><h2>${esc(l.title)}</h2>
+      <p class="where">${esc(l.area)} · Floor ${l.floor} · ${l.baths} bathroom${l.baths > 1 ? "s" : ""}${l.sample ? "" : " · Added by you"}</p></div>
+      <div class="price"><b>${inr(l.rent)}</b><span>${inr(l.rent / 3)} each, per month</span></div></div>
+    <div class="facts">${facts.map(([t, v]) => `<span class="${v ? "" : "off"}">${t}</span>`).join("")}</div>
+    <p class="trade">${tradeLine(r)}</p>
+    <div class="cols">${r.evals.map((e, j) => `<div class="who">
+      <div class="who-h"><div class="av" style="--c:${C(j)}">${initial(e.person.name)}</div><div><h4>${esc(e.person.name)}</h4>${pillFor(e)}</div></div>
+      <ul>${e.breaks.map(x => `<li class="x">${ICON.x}<span>${esc(x)}</span></li>`).join("")}${e.gives.map(x => `<li>${ICON.c}<span>${esc(x)}</span></li>`).join("")}</ul>
+      <details${e.breaks.length || e.gives.length ? "" : " open"}><summary>${e.gets.length} thing${e.gets.length === 1 ? "" : "s"} she gets</summary>
+      <ul>${e.gets.map(x => `<li>${ICON.g}<span>${esc(x)}</span></li>`).join("")}</ul></details>
+    </div>`).join("")}</div></article>`;
+}
+function renderResults() {
+  if (slots.filter(Boolean).length < 3) {
+    $("#results").innerHTML = `<div class="empty"><h2>Your shortlist is waiting on answers.</h2><p>It appears once all three of you are in.</p><div class="cta"><button class="btn" data-go="together">Add everyone's answers</button><button class="btn alt" id="exEmpty">See an example</button></div></div>`;
+    $("#exEmpty").onclick = () => { loadExample(); renderResults(); }; return;
+  }
+  const res = rankListings(allListings(), slots), n = res.workable.length, shown = res.shortlist.concat(res.nearMisses);
+  const [h, p] = n >= 3 ? [`${res.shortlist.length} flats that work for all of you.`, `${n} of ${res.total} listings break nobody's dealbreaker. These three have the fairest tradeoffs.`]
+    : n > 0 ? [`${n === 1 ? "One flat works" : n + " flats work"} for all of you.`, `The closest misses are below too, each with the one dealbreaker it breaks.`]
+    : [`Nothing works for all three yet.`, `Here are the closest misses. The conversation to have is which dealbreaker could move.`];
+  const tight = res.ruledOut.map((x, i) => ({ ...x, i })).sort((a, b) => b.count - a.count);
+  $("#results").innerHTML = `<div class="verdict"><p class="kick">${esc(slots.map(s => s.name).join(", ").replace(/, ([^,]*)$/, " and $1"))}</p><h1>${h}</h1><p>${p}</p></div>
+    <div class="glance"><table><thead><tr><th>At a glance</th>${slots.map((s, i) => `<th><span style="color:${C(i)}">●</span> ${esc(s.name)}</th>`).join("")}<th>Each pays</th></tr></thead>
+      <tbody>${shown.map(r => `<tr><td><a href="#opt-${r.listing.id}">${esc(r.listing.title)}</a></td>${r.evals.map(e => `<td>${pillFor(e)}</td>`).join("")}<td>${inr(r.listing.rent / 3)}</td></tr>`).join("")}</tbody></table></div>
+    <div class="tight">${tight.map(x => `<div><span class="av" style="--c:${C(x.i)}">${initial(x.person.name)}</span>${esc(x.person.name)}'s dealbreakers rule out ${x.count} of ${res.total}</div>`).join("")}</div>
+    ${res.shortlist.map((r, i) => optHTML(r, i, false)).join("")}${res.nearMisses.map((r, i) => optHTML(r, i, true)).join("")}
+    <div class="after"><button class="btn alt" data-go="together">Change someone's answers</button><button class="btn alt" data-go="listings">Add a listing</button></div>`;
+  $$(".glance a").forEach(a => a.onclick = e => { e.preventDefault(); document.querySelector(a.getAttribute("href")).scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); });
+}
+
+// ---------- listings ----------
+const LF = [["lift", "Lift"], ["parking", "Car parking"], ["pets", "Pets allowed"], ["furnished", "Furnished"], ["balcony", "Balcony"], ["security", "24h security"], ["backup", "Power backup"], ["gym", "Gym"], ["metro", "Near metro"]];
+$("#lchecks").innerHTML = LF.map(([k, t]) => `<div class="item"><label for="lc-${k}">${t}</label><input type="checkbox" id="lc-${k}" data-k="${k}"></div>`).join("");
+function renderListings() {
+  const y = b => b ? `<td class="y">●</td>` : `<td class="n">●</td>`;
+  $("#ltable").innerHTML = `<thead><tr><th>Listing</th><th>Area</th><th>Rent</th><th>Each</th><th>Floor</th><th>Baths</th>${LF.map(([, t]) => `<th>${t}</th>`).join("")}<th></th></tr></thead><tbody>` +
+    allListings().map(l => `<tr><td><b style="font-weight:600">${esc(l.title)}</b></td><td>${esc(l.area)}</td><td>${inr(l.rent)}</td><td>${inr(l.rent / 3)}</td><td>${l.floor}</td><td>${l.baths}</td>${LF.map(([k]) => y(l[k])).join("")}
+      <td>${l.sample ? "" : `<button class="textlink" style="color:var(--red)" data-del="${l.id}">Remove</button>`}</td></tr>`).join("") + "</tbody>";
+}
+$("#ltable").onclick = e => { const d = e.target.closest("[data-del]"); if (!d) return; custom = custom.filter(l => l.id !== d.dataset.del); store.set("cg-listings", custom); renderListings(); toast("Listing removed"); };
+$("#openAdd").onclick = () => openSheet("#addSheet");
+$("#addListing").onclick = () => {
+  const title = $("#lt").value.trim(), rent = +$("#lr").value;
+  if (!title || !rent) { $("#lerr").textContent = "Add a name and the total rent."; return; }
+  const l = { id: "c" + Date.now(), title, area: $("#la").value, rent, floor: +$("#lf").value || 0, baths: +$("#lb").value || 1 };
+  $$("#lchecks input").forEach(c => l[c.dataset.k] = c.checked);
+  custom.push(l); store.set("cg-listings", custom); $("#lform").reset(); $("#lerr").textContent = ""; renderListings(); closeSheets(); toast("Listing added");
+};
+
+// ---------- boot: handle shared links ----------
+renderListings();
+(function () {
+  const m = location.hash.match(/^#add=(.+)$/);
+  if (!m) return;
+  history.replaceState(null, "", location.pathname + location.search);
+  try { const p = decode(m[1]); if (addProfile(p)) { go("together"); toast(`${p.name}'s answers added`); } else { go("together"); toast("All three places are taken. Remove one first."); } }
+  catch (err) { toast(err.message); }
+})();
+</script>
+</body>
+</html>
